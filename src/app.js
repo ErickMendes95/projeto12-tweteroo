@@ -7,12 +7,11 @@ app.use(express.json())
 app.use(cors())
 
 const arrayUsuarios = []
-const arrayTweets = []
+const arrayTweet = []
 
 app.post("/sign-up", (req, res) => {
     const userinfo = req.body
     arrayUsuarios.push(userinfo)
-    console.log(arrayUsuarios)
 
     res.status(201).send("OK")
 })
@@ -20,18 +19,24 @@ app.post("/sign-up", (req, res) => {
 app.post("/tweets", (req, res) => {
     const { username } = req.body
     const { tweet } = req.body
-    
-    const usuario = arrayUsuarios.find(item => item.username === username)
 
+    const usuario = arrayUsuarios.find(item => item.username === username)
+    
     if(!usuario){
         res.status(401).send("UNAUTHORIZED")
     }
-    arrayTweets.push(tweet)
+    let usertweet = {...usuario,tweet}
+    arrayTweet.push(usertweet)
+    
     res.status(201).send("OK")
 })
 
-app.get("/tweets", (req, res) => {
+app.get("/tweets", (_, res) => {
+    const arrayTweetReverse = [...arrayTweet]
 
+    const ultimosTweets = arrayTweetReverse.reverse().slice(0, 10)
+
+    res.send(ultimosTweets)
 })
 
 app.listen(5000)
