@@ -10,6 +10,14 @@ const arrayUsuarios = []
 const arrayTweet = []
 
 app.post("/sign-up", (req, res) => {
+    const {username} = req.body
+    const {avatar} = req.body
+
+    if(username === '' || username === null || typeof username !== 'string'){
+        res.status(400).send("Preencha o username")
+        return
+    }
+
     const userinfo = req.body
     arrayUsuarios.push(userinfo)
 
