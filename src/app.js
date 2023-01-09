@@ -18,6 +18,11 @@ app.post("/sign-up", (req, res) => {
         return
     }
 
+    if(avatar === '' || avatar === null || typeof avatar !== 'string'){
+        res.status(400).send("Preencha o avatar")
+        return
+    }
+
     const userinfo = req.body
     arrayUsuarios.push(userinfo)
 
@@ -27,6 +32,11 @@ app.post("/sign-up", (req, res) => {
 app.post("/tweets", (req, res) => {
     const { username } = req.body
     const { tweet } = req.body
+
+    if(tweet === '' || tweet === null || typeof tweet !== 'string'){
+        res.status(400).send("Preencha o tweet")
+        return
+    }
 
     const usuario = arrayUsuarios.find(item => item.username === username)
     
@@ -44,7 +54,7 @@ app.get("/tweets", (_, res) => {
 
     const ultimosTweets = arrayTweetReverse.reverse().slice(0, 10)
 
-    res.send(ultimosTweets)
+    res.status(200).send(ultimosTweets)
 })
 
 app.listen(5000)
